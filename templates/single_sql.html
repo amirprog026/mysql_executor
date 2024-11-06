@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Run SQL on Remote MariaDB</title>
+</head>
+<body>
+<h1>Execute Single SQL Query on Remote MariaDB</h1>
+<form id="singleQueryForm">
+    <label for="host">Host:</label>
+    <input type="text" id="singleQueryHost" name="host" required><br><br>
+
+    <label for="username">Username:</label>
+    <input type="text" id="singleQueryUsername" name="username" required><br><br>
+
+    <label for="password">Password:</label>
+    <input type="password" id="singleQueryPassword" name="password" required><br><br>
+
+    <label for="port">Port:</label>
+    <input type="number" id="singleQueryPort" name="port" value="3306" required><br><br>
+
+    <label for="query">SQL Query:</label><br>
+    <textarea id="query" name="query" rows="4" cols="50" required></textarea><br><br>
+
+    <button type="submit">Execute Query</button>
+</form>
+
+<h2>Single Query Result:</h2>
+<pre id="singleQueryResult"></pre>
+
+<script>
+    document.getElementById('singleQueryForm').onsubmit = async (e) => {
+        e.preventDefault();
+        const formData = new FormData(e.target);
+
+        const response = await fetch('/run_single_query', {
+            method: 'POST',
+            body: formData
+        });
+        const result = await response.json();
+        document.getElementById('singleQueryResult').textContent = JSON.stringify(result, null, 2);
+    };
+</script>
+</body>
+</html>
